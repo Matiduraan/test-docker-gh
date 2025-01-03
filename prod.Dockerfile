@@ -5,12 +5,14 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install --only=production
 
-ENV MYSQLDB_USER=root
-ENV MYSQLDB_ROOT_PASSWORD=demo_pass
-ENV MYSQLDB_DATABASE=demo_db
-ENV DB_USER=root
-ENV DB_PASSWORD=demo_pass
-ENV DB_NAME=demo_db
+ARG DB_HOST
+ARG DB_USER
+ARG DB_PASS
+
+ENV DB_HOST=${DB_HOST}
+ENV DB_USER=${DB_USER}
+ENV DB_PASS=${DB_PASS}
+
 
 COPY . .
 
