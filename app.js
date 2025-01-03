@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req,res)=>{
-	return res.send("OK");
+	return res.send("OK EDITADO");
 });
 
 app.get('/locations', async(req, res) => {
