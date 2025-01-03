@@ -1,26 +1,30 @@
-CREATE DATABASE IF NOT EXISTS demo_db;
+-- Crear la base de datos
+CREATE DATABASE demo_db;
 
-USE demo_db;
+-- Usar la base de datos
+\c demo_db
 
+-- Crear tabla location
 CREATE TABLE location (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    code CHAR(2) NOT NULL,
-    name VARCHAR(45) NOT NULL,
-    PRIMARY KEY (id)
+    id SERIAL PRIMARY KEY,
+    code CHARACTER(2) NOT NULL,
+    name VARCHAR(45) NOT NULL
 );
 
+-- Crear tabla customer
 CREATE TABLE customer (
-    id INT(11) NOT NULL AUTO_INCREMENT,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(45) NOT NULL,
-    location_id INT(5) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (location_id) REFERENCES location(id)
+    location_id INT NOT NULL,
+    CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES location(id) ON DELETE CASCADE
 );
 
-DESCRIBE customer;
+-- Describir la tabla customer (PostgreSQL no tiene un equivalente directo para DESCRIBE,
+-- pero puedes usar el comando \d en psql o consultar el catálogo de sistema)
+-- Ejemplo en psql:
+-- \d customer
 
-/* States list credits: https://gist.github.com/JeremyMorgan/5833666  */
-
+-- Insertar datos en location
 INSERT INTO location (code, name) VALUES
     ('AK', 'Alaska'),
     ('AL', 'Alabama'),
