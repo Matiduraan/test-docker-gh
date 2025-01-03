@@ -1,32 +1,33 @@
 require('dotenv').config();
 const express = require('express');
-const { createPool } = require('mysql2/promise');
+const { Pool } = require('pg');
 
-const sql = createPool({
+// Configuración de conexión a PostgreSQL
+const pool = new Pool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
-  password: "",
+  password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
 });
 
 const app = express();
 
 app.use(express.json());
 
-app.get('/', (req,res)=>{
-	return res.send("OK EDITADO");
+app.get('/', (req, res) => {
+  return res.send("OK");
 });
 
-app.get('/locations', async(req, res) => {
+// Endpoint para obtener ubicaciones
+app.get('/locations', async (req, res) => {
   try {
-      const [locations] = await sql.query('SELECT * FROM location');
-      return res.json(locations);
-  }
-  catch(error) {
-    console.log("ERROR:",error)
+    const { rows: locations } = await pool.query('SELECT * FROM location');
+    return res.json(locations);
+  } catch (error) {
+    console.error("ERROR:", error);
     return res.status(500).json({
-        message: 'Internal server error',
+      message: 'Internal server error',
     });
   }
 });
